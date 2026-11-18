@@ -106,7 +106,7 @@
   .panel-head h2{ font-size: 15px; margin:0; font-weight:600; }
   .panel-head .range-note{ font-size: 12px; color: var(--text-dim); font-family: var(--mono); }
 
-  canvas{ width: 100%; display:block; touch-action: none; }
+  canvas{ width: 100%; display:block; touch-action: pan-y; }
   .chart-container{ position: relative; }
 
   .oor-panel{
@@ -169,6 +169,11 @@
   }
 
   @media (max-width: 720px){
+    body{ padding: 18px 12px 40px; }
+    .panel{ padding: 14px 12px 10px; }
+    .oor-row{ flex-wrap: wrap; gap: 2px 12px; }
+    .oor-row .oor-val{ white-space: normal; margin-left: auto; }
+    .card .value{ font-size: 18px; }
     .summary-grid{ grid-template-columns: repeat(2, 1fr); }
     h1{ font-size: 21px; }
     header{ flex-direction:column; align-items:flex-start; }
@@ -244,6 +249,7 @@
 
   </div>
 
+  /*<footer>Generated report · ข้อมูลจากคลังยา · เปิดดูได้แบบออฟไลน์ ไม่ต้องเชื่อมต่ออินเทอร์เน็ต</footer>*/
 </div>
 
 <script>
@@ -406,7 +412,7 @@ function drawChart(canvas, points, key, colorMain){
 }
 
 function attachHover(canvas, tooltipEl, key, unitLabel){
-  canvas.addEventListener('mousemove', (e)=>{
+  const onMove = (e)=>{
     const geom = canvas._geom;
     if(!geom) return;
     const rect = canvas.getBoundingClientRect();
@@ -429,8 +435,11 @@ function attachHover(canvas, tooltipEl, key, unitLabel){
     tooltipEl.style.left = left + 'px';
     tooltipEl.style.top = Math.max(0, y - 40) + 'px';
     tooltipEl.style.opacity = 1;
-  });
-  canvas.addEventListener('mouseleave', ()=>{ tooltipEl.style.opacity = 0; });
+  };
+  canvas.addEventListener('pointermove', onMove);
+  canvas.addEventListener('pointerdown', onMove);
+  canvas.addEventListener('pointerleave', (e)=>{ if (e.pointerType === 'mouse') tooltipEl.style.opacity = 0; });
+  document.addEventListener('pointerdown', (e)=>{ if (e.target !== canvas) tooltipEl.style.opacity = 0; });
 }
 
 /* ===================== OUT-OF-RANGE EVENTS LIST ===================== */
