@@ -212,7 +212,7 @@
       <div class="range-note" id="tempNote">ช่วงปกติ 20.0 – 30.0 °C</div>
     </div>
     <div class="chart-container">
-      <canvas id="tempChart" height="280"></canvas>
+      <canvas id="tempChart" data-h="280" height="280"></canvas>
       <div class="tooltip" id="tempTooltip"></div>
     </div>
     <div class="oor-panel">
@@ -230,7 +230,7 @@
       <div class="range-note" id="humiNote">ช่วงปกติ 30.0 – 80.0 %RH</div>
     </div>
     <div class="chart-container">
-      <canvas id="humiChart" height="280"></canvas>
+      <canvas id="humiChart" data-h="280" height="280"></canvas>
       <div class="tooltip" id="humiTooltip"></div>
     </div>
     <div class="oor-panel">
@@ -244,7 +244,7 @@
 
   </div>
 
-  </div>
+</div>
 
 <script>
 /* ===================== EMBEDDED DATA ===================== */
@@ -297,7 +297,7 @@ function setupCanvas(canvas){
   const dpr = window.devicePixelRatio || 1;
   const rect = canvas.getBoundingClientRect();
   const cssW = rect.width || canvas.parentElement.clientWidth;
-  const cssH = parseInt(canvas.getAttribute('height'), 10) || 280;
+  const cssH = parseInt(canvas.dataset.h, 10) || 280;
   canvas.width = cssW * dpr;
   canvas.height = cssH * dpr;
   canvas.style.height = cssH + 'px';
